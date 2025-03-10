@@ -1,9 +1,9 @@
-** Kako pokrenuti aplikaciju lokalno u Dockeru? **
+# Kako pokrenuti aplikaciju lokalno u Dockeru?
 - Morate imati instaliran Docker na vašem računalu
 - Klonirajte repozitorij
 ```bash
-git clone https://github.com/korisnickoime/moj-projekt.git
-cd moj-projekt
+git clone https://github.com/danielkatic1986/shop_manager.git
+cd shop_manager
 ```
 - Izgradite Docker image i pokrenite kontejner
 ```bash
