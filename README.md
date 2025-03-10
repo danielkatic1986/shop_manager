@@ -8,7 +8,7 @@ cd shop_manager
 - Izgradite Docker image i pokrenite kontejner
 ```bash
 docker build -t flask-app .
-docker run -p 5000:5000 flask-app
+docker run -p 5001:5001 flask-app
 
 ```
 - Ili pomoću Docker Compose
