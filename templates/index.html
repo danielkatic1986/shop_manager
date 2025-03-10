@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upravljanje Artiklima</title>
+</head>
+<body>
+    <h1>Artikli</h1>
+    <form method="POST" action="/dodaj">
+        <input type="text" name="naziv" placeholder="Naziv artikla" required>
+        <input type="text" name="kategorija" placeholder="Kategorija" required>
+        <input type="number" step="0.01" name="cijena" placeholder="Cijena" required>
+        <input type="number" name="stanje" placeholder="Količina" required>
+        <button type="submit">Dodaj Artikl</button>
+    </form>
+
+    <ul>
+        {% for proizvod in proizvodi %}
+            <li>
+                {{ proizvod.naziv }} - {{ proizvod.kategorija }} - {{ proizvod.cijena }}€ - {{ proizvod.stanje }} kom
+                <a href="{{ url_for('brisi_proizvod', id=proizvod.id) }}">Obriši</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
