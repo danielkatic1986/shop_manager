@@ -15,6 +15,10 @@ Aplikacija podržava i upload slike za svaki proizvod, što omogućuje vizualni 
 Backend je izrađen u Pythonu pomoću Flask okvira, dok se za bazu podataka koristi SQLite zajedno sa SQLAlchemy ORM-om.
 Frontend koristi HTML, CSS i Bootstrap kako bi se osigurao moderan i responzivan dizajn.
 
+## UseCase dijagram
+
+![UseCase dijagram](UseCase.png)
+
 ## Kako pokrenuti aplikaciju
 
 ### Pomoću Docker-a
