@@ -1,28 +1,54 @@
-<!DOCTYPE html>
-<html lang="hr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upravljanje Artiklima</title>
-</head>
-<body>
-    <h1>Artikli</h1>
-    <form method="POST" action="/dodaj">
-        <input type="text" name="naziv" placeholder="Naziv artikla" required>
-        <input type="text" name="kategorija" placeholder="Kategorija" required>
-        <input type="number" step="0.01" name="cijena" placeholder="Cijena" required>
-        <input type="number" name="stanje" placeholder="Količina" required>
-        <button type="submit">Dodaj Artikl</button>
-    </form>
-
-    <ul>
-        {% for proizvod in proizvodi %}
-            <li>
-                {{ proizvod.naziv }} - {{ proizvod.kategorija }} - {{ proizvod.cijena }}€ - {{ proizvod.stanje }} kom
-                <a href="{{ url_for('brisi_proizvod', id=proizvod.id) }}">Obriši</a>
-            </li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
-
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Popis artikala</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Kategorija</th>
+        <th scope="col">Opis</th>
+        <th scope="col">Cijena</th>
+        <th scope="col">Stanje</th>
+        <th scope="col">Slika</th>
+        <th scope="col">Mogućnosti</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for proizvod in proizvodi %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td>{{ proizvod.naziv }}</td>
+        <td>{{ proizvod.kategorija }}</td>
+        <td>{{ proizvod.opis }}</td>
+        <td>{{ proizvod.cijena }}</td>
+        <td>{{ proizvod.stanje }}</td>
+        <td>
+          {% if proizvod.image_url %}
+          <img
+            src="{{ proizvod.image_url }}"
+            alt="{{ proizvod.naziv }}"
+            class="img-thumbnail"
+            style="max-width: 100px"
+          />
+          {% else %} Nema slike {% endif %}
+        </td>
+        <td>
+          <a
+            href="{{ url_for('uredi_proizvod', id=proizvod.id) }}"
+            class="btn btn-sm btn-warning"
+            >Uredi</a
+          >
+          <a
+            href="{{ url_for('brisi_proizvod', id=proizvod.id) }}"
+            class="btn btn-sm btn-danger"
+            onclick="return confirm('Jesi li siguran?');"
+            >Obriši</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

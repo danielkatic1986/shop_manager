@@ -1,0 +1,73 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Dodaj novi proizvod</h2>
+  <form
+    method="POST"
+    action="{{ url_for('dodaj_proizvod') }}"
+    enctype="multipart/form-data"
+  >
+    <div class="mb-3">
+      <label for="naziv" class="form-label">Naziv proizvoda</label>
+      <input
+        type="text"
+        class="form-control"
+        id="naziv"
+        name="naziv"
+        placeholder="Unesite naziv proizvoda"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="kategorija" class="form-label">Kategorija</label>
+      <input
+        type="text"
+        class="form-control"
+        id="kategorija"
+        name="kategorija"
+        placeholder="Unesite kategoriju proizvoda"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="opis" class="form-label">Opis</label>
+      <textarea
+        class="form-control"
+        id="opis"
+        name="opis"
+        rows="3"
+        placeholder="Unesite opis proizvoda"
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="cijena" class="form-label">Cijena</label>
+      <input
+        type="number"
+        step="0.01"
+        class="form-control"
+        id="cijena"
+        name="cijena"
+        placeholder="Unesite cijenu proizvoda"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="stanje" class="form-label">Stanje artikla</label>
+      <input
+        type="number"
+        step="1"
+        class="form-control"
+        id="stanje"
+        name="stanje"
+        placeholder="Unesite količinu proizvoda na stanju"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="slika" class="form-label">Slika proizvoda</label>
+      <input type="file" class="form-control" id="slika" name="slika" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Dodaj artikal</button>
+  </form>
+</div>
+{% endblock %}
