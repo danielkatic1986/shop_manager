@@ -25,26 +25,29 @@
         <td>{{ proizvod.stanje }}</td>
         <td>
           {% if proizvod.image_url %}
-          <img
-            src="{{ proizvod.image_url }}"
-            alt="{{ proizvod.naziv }}"
-            class="img-thumbnail"
-            style="max-width: 100px"
-          />
+          <a href="{{ proizvod.image_url }}" target="_blank">
+            <img
+              src="{{ proizvod.image_url }}"
+              alt="{{ proizvod.naziv }}"
+              class="img-thumbnail"
+              style="max-width: 100px"
+            />
+          </a>
           {% else %} Nema slike {% endif %}
         </td>
         <td>
           <a
             href="{{ url_for('uredi_proizvod', id=proizvod.id) }}"
-            class="btn btn-sm btn-warning"
-            >Uredi</a
+            class="btn btn-warning d-block mb-2"
           >
+            Uredi
+          </a>
           <a
             href="{{ url_for('brisi_proizvod', id=proizvod.id) }}"
-            class="btn btn-sm btn-danger"
-            onclick="return confirm('Jesi li siguran?');"
-            >Obriši</a
+            class="btn btn-danger d-block"
           >
+            Obriši
+          </a>
         </td>
       </tr>
       {% endfor %}

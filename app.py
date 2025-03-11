@@ -79,11 +79,27 @@ def brisi_proizvod(id):
         db.session.commit()
     return redirect(url_for('index'))
 
-@app.route('/uredi/<int:id>')
+@app.route('/uredi/<int:id>', methods=['GET', 'POST'])
 def uredi_proizvod(id):
-    proizvod = Proizvod.query.get(id)
-    if proizvod:
+    proizvod = Proizvod.query.get_or_404(id)
+    if request.method == 'POST':
+        proizvod.naziv = request.form['naziv']
+        proizvod.kategorija = request.form['kategorija']
+        proizvod.opis = request.form.get('opis')
+        proizvod.cijena = float(request.form['cijena'])
+        proizvod.stanje = int(request.form['stanje'])
+        # Ako korisnik pošalje novu sliku
+        slika = request.files.get('slika')
+        if slika and allowed_file(slika.filename):
+            filename = secure_filename(slika.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            slika.save(filepath)
+            proizvod.image_url = url_for('static', filename='images/' + filename)
+        db.session.commit()
         return redirect(url_for('index'))
+    else:
+        return render_template('uredi-proizvod.html', proizvod=proizvod)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
