@@ -33,10 +33,46 @@ with app.app_context():
 # Rute
 @app.route('/')
 def index():
-    proizvodi = Proizvod.query.all()
-    if not proizvodi:
-        return redirect(url_for('forma_dodaj_proizvod'))
-    return render_template('index.html', proizvodi=proizvodi)
+    sort = request.args.get('sort', 'id')  # zadani je 'id', možeš proširiti za ostala polja
+    default_order = 'desc' if sort == 'id' else 'asc'
+    order = request.args.get('order', default_order)
+    page = request.args.get('page', 1, type=int)
+
+    # Početni upit
+    query = Proizvod.query
+
+    # Sortiraj po cijeni ako je parametar 'cijena'
+    if sort == 'id':
+        if order == 'asc':
+            query = query.order_by(Proizvod.id.asc())
+        else:
+            query = query.order_by(Proizvod.id.desc())
+    elif sort == 'cijena':
+        if order == 'asc':
+            query = query.order_by(Proizvod.cijena.asc())
+        else:
+            query = query.order_by(Proizvod.cijena.desc())
+    elif sort == 'stanje':
+        if order == 'asc':
+            query = query.order_by(Proizvod.stanje.asc())
+        else:
+            query = query.order_by(Proizvod.stanje.desc())
+    elif sort == 'kategorija':
+        if order == 'asc':
+            query = query.order_by(Proizvod.kategorija.asc())
+        else:
+            query = query.order_by(Proizvod.kategorija.desc())
+    elif sort == 'naziv':
+        if order == 'asc':
+            query = query.order_by(Proizvod.naziv.asc())
+        else:
+            query = query.order_by(Proizvod.naziv.desc())
+    # Dodati druge kriterije sortiranja po potrebi
+
+    pagination = query.paginate(page=page, per_page=10, error_out=False)
+    proizvodi = pagination.items
+
+    return render_template('index.html', proizvodi=proizvodi, pagination=pagination, sort=sort, order=order)
 
 @app.route('/forma_dodaj_proizvod')
 def forma_dodaj_proizvod():

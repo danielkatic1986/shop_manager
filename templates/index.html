@@ -4,12 +4,93 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Naziv</th>
-        <th scope="col">Kategorija</th>
+        <th>
+          {% if sort == 'id' and order == 'desc' %}
+          <!-- Trenutno je silazno, klik prebacuje na uzlazno -->
+          <a
+            href="{{ url_for('index', sort='id', order='asc', page=pagination.page) }}"
+          >
+            # <i class="bi bi-arrow-down"></i>
+          </a>
+          {% elif sort == 'id' and order == 'asc' %}
+          <!-- Trenutno je uzlazno, klik prebacuje na silazno -->
+          <a
+            href="{{ url_for('index', sort='id', order='desc', page=pagination.page) }}"
+          >
+            # <i class="bi bi-arrow-up"></i>
+          </a>
+          {% else %}
+          <!-- Ako nije sortirano po ID, zadano prikazujemo silazno -->
+          <a
+            href="{{ url_for('index', sort='id', order='desc', page=pagination.page) }}"
+          >
+            # <i class="bi bi-arrow-down"></i>
+          </a>
+          {% endif %}
+        </th>
+        <th>
+          {% if sort == 'naziv' and order == 'asc' %}
+          <a
+            href="{{ url_for('index', sort='naziv', order='desc', page=pagination.page) }}"
+          >
+            Naziv <i class="bi bi-arrow-up"></i>
+          </a>
+          {% else %}
+          <a
+            href="{{ url_for('index', sort='naziv', order='asc', page=pagination.page) }}"
+          >
+            Naziv <i class="bi bi-arrow-down"></i>
+          </a>
+          {% endif %}
+        </th>
+
+        <th>
+          {% if sort == 'kategorija' and order == 'asc' %}
+          <a
+            href="{{ url_for('index', sort='kategorija', order='desc', page=pagination.page) }}"
+          >
+            Kategorija <i class="bi bi-arrow-up"></i>
+          </a>
+          {% else %}
+          <a
+            href="{{ url_for('index', sort='kategorija', order='asc', page=pagination.page) }}"
+          >
+            Kategorija <i class="bi bi-arrow-down"></i>
+          </a>
+          {% endif %}
+        </th>
         <th scope="col">Opis</th>
-        <th scope="col">Cijena</th>
-        <th scope="col">Stanje</th>
+        <th>
+          <!-- Ako je trenutačno sortiranje uzlazno, ponudi prebacivanje u silazni redoslijed, i obrnuto -->
+          {% if sort == 'cijena' and order == 'asc' %}
+          <a
+            href="{{ url_for('index', sort='cijena', order='desc', page=pagination.page) }}"
+          >
+            Cijena <i class="bi bi-arrow-up"></i>
+          </a>
+          {% else %}
+          <a
+            href="{{ url_for('index', sort='cijena', order='asc', page=pagination.page) }}"
+          >
+            Cijena <i class="bi bi-arrow-down"></i>
+          </a>
+          {% endif %}
+        </th>
+        <th>
+          {% if sort == 'stanje' and order == 'asc' %}
+          <a
+            href="{{ url_for('index', sort='stanje', order='desc', page=pagination.page) }}"
+          >
+            Stanje <i class="bi bi-arrow-up"></i>
+          </a>
+          {% else %}
+          <a
+            href="{{ url_for('index', sort='stanje', order='asc', page=pagination.page) }}"
+          >
+            Stanje <i class="bi bi-arrow-down"></i>
+          </a>
+          {% endif %}
+        </th>
         <th scope="col">Slika</th>
         <th scope="col">Mogućnosti</th>
       </tr>
@@ -54,4 +135,47 @@
     </tbody>
   </table>
 </div>
-{% endblock %}
+{% if pagination.pages > 1 %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    {% if pagination.has_prev %}
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="{{ url_for('index', page=pagination.prev_num) }}"
+        aria-label="Prethodna"
+      >
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">&laquo;</span>
+    </li>
+    {% endif %} {% for p in pagination.iter_pages(left_edge=2, right_edge=2,
+    left_current=2, right_current=2) %} {% if p %} {% if p == pagination.page %}
+    <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+    {% else %}
+    <li class="page-item">
+      <a class="page-link" href="{{ url_for('index', page=p) }}">{{ p }}</a>
+    </li>
+    {% endif %} {% else %}
+    <li class="page-item disabled"><span class="page-link">...</span></li>
+    {% endif %} {% endfor %} {% if pagination.has_next %}
+    <li class="page-item">
+      <a
+        class="page-link"
+        href="{{ url_for('index', page=pagination.next_num) }}"
+        aria-label="Sljedeća"
+      >
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+      <span class="page-link">&raquo;</span>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %} {% endblock %}
