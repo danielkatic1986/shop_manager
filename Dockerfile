@@ -1,4 +1,4 @@
-# Koristi službenu Python sliku
+# Koristi Python 3.9
 FROM python:3.9
 
 # Postavi radni direktorij

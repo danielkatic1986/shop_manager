@@ -33,7 +33,7 @@ with app.app_context():
 # Rute
 @app.route('/')
 def index():
-    sort = request.args.get('sort', 'id')  # zadani je 'id', možeš proširiti za ostala polja
+    sort = request.args.get('sort', 'id')  # zadani je 'id'
     default_order = 'desc' if sort == 'id' else 'asc'
     order = request.args.get('order', default_order)
     page = request.args.get('page', 1, type=int)
@@ -41,7 +41,7 @@ def index():
     # Početni upit
     query = Proizvod.query
 
-    # Sortiraj po cijeni ako je parametar 'cijena'
+    # Sortiranje
     if sort == 'id':
         if order == 'asc':
             query = query.order_by(Proizvod.id.asc())
@@ -82,7 +82,7 @@ def forma_dodaj_proizvod():
 def dodaj_proizvod():
     naziv = request.form['naziv']
     kategorija = request.form['kategorija']
-    opis = request.form.get('opis')  # ako želiš spremiti i opis
+    opis = request.form.get('opis') 
     cijena = float(request.form['cijena'])
     stanje = int(request.form['stanje'])
     
@@ -101,7 +101,7 @@ def dodaj_proizvod():
         opis=opis,
         cijena=cijena,
         stanje=stanje,
-        image_url=image_url  # spremi putanju do slike
+        image_url=image_url  # Putanja do slike
     )
     db.session.add(novi_proizvod)
     db.session.commit()
