@@ -1,6 +1,23 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container mt-5">
   <h2 class="mb-4">Popis artikala</h2>
+  <div class="btn-group mb-3">
+    <a
+      class="btn btn-secondary {{ 'active' if status == 'all'       else '' }}"
+      href="{{ url_for('index') }}"
+      >Svi</a
+    >
+    <a
+      class="btn btn-secondary {{ 'active' if status == 'dostupno'  else '' }}"
+      href="{{ url_for('index', status='dostupno') }}"
+      >Dostupni</a
+    >
+    <a
+      class="btn btn-secondary {{ 'active' if status == 'rasprodano' else '' }}"
+      href="{{ url_for('index', status='rasprodano') }}"
+      >Rasprodani</a
+    >
+  </div>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -129,6 +146,32 @@
           >
             Obriši
           </a>
+          <br />
+          <!-- Checkbox Rasprodano / Dostupno -->
+          <form
+            method="post"
+            action="{{ url_for('toggle_rasprodano', id=proizvod.id) }}"
+            class="d-inline"
+          >
+            <!-- Hidden value definira novo stanje koje backend postavlja -->
+            <input
+              type="hidden"
+              name="stanje"
+              value="{{ 0 if proizvod.stanje > 0 else 1 }}"
+            />
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="sold_{{
+              proizvod.id }}" onchange="this.form.submit()" {{ 'checked' if
+              proizvod.stanje == 0 else '' }}>
+              <label
+                class="form-check-label small"
+                for="sold_{{ proizvod.id }}"
+              >
+                Označi kao rasprodano
+              </label>
+            </div>
+          </form>
         </td>
       </tr>
       {% endfor %}

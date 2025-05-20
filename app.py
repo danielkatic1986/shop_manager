@@ -36,10 +36,17 @@ def index():
     sort = request.args.get('sort', 'id')  # zadani je 'id'
     default_order = 'desc' if sort == 'id' else 'asc'
     order = request.args.get('order', default_order)
+    status = request.args.get('status', 'all')
     page = request.args.get('page', 1, type=int)
 
     # Početni upit
     query = Proizvod.query
+
+    # Filtriranje
+    if status == 'dostupno':
+        query = query.filter(Proizvod.stanje > 0)
+    elif status == 'rasprodano':
+        query = query.filter(Proizvod.stanje == 0)
 
     # Sortiranje
     if sort == 'id':
@@ -69,10 +76,34 @@ def index():
             query = query.order_by(Proizvod.naziv.desc())
     # Dodati druge kriterije sortiranja po potrebi
 
-    pagination = query.paginate(page=page, per_page=10, error_out=False)
+    pagination = query.paginate(page=page, per_page=5, error_out=False)
     proizvodi = pagination.items
 
-    return render_template('index.html', proizvodi=proizvodi, pagination=pagination, sort=sort, order=order)
+    return render_template('index.html', proizvodi=proizvodi, pagination=pagination, sort=sort, order=order, status=status)
+
+@app.route('/dostupno')
+def dostupno():
+    return redirect(url_for('index'), status='dostupno')
+
+@app.route('/rasprodano')
+def rasprodano():
+    return redirect(url_for('index', status='rasprodano'))
+
+@app.route('/toggle_rasprodano/<int:id>', methods=['POST'])
+def toggle_rasprodano(id):
+    proizvod = Proizvod.query.get_or_404(id)
+
+    if 'stanje' in request.form:
+        proizvod.stanje = int(request.form['stanje'])
+    else:
+        proizvod.stanje = 0 if proizvod.stanje > 0 else 1
+
+   #  Checkbox iz edit forme
+    if request.form.get('rasprodano'):
+        proizvod.stanje = 0
+
+    db.session.commit()
+    return redirect(request.referrer or url_for('index'))
 
 @app.route('/forma_dodaj_proizvod')
 def forma_dodaj_proizvod():
